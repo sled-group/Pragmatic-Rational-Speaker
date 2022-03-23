@@ -4,7 +4,7 @@
 
 import torch
 
-from utils.experimental import attempt_load
+from models.experimental import attempt_load
 from utils.datasets import LoadImages
 from utils.general import check_img_size, non_max_suppression
 
@@ -13,7 +13,14 @@ conf_thres = 0.25
 iou_thres = 0.45
 half = False
 
-''' Object detection inference '''
+
+''' Object detection inference 
+	Inputs:
+		- source: path to image
+		- weights: pre-trained yolo v3 model (best.pt)
+	Outputs:
+		- predictions: list of prediction outcomes for each image [#obj, 6]
+'''
 def detect(source, weights, imgsz=256):
 
 	# Load model
@@ -39,6 +46,7 @@ def detect(source, weights, imgsz=256):
 			img = img.unsqueeze(0)
 
 		# Inference
+		print(img.shape) ######################
 		pred = model(img, False)[0]
 
 		# Apply NMS
@@ -47,8 +55,3 @@ def detect(source, weights, imgsz=256):
 		preds.append(pred[0])
 
 	return preds
-
-
-# $ pycodestyle setup.py insta485generator
-# $ pylint --disable=no-value-for-parameter setup.py insta485generator
-# $ pydocstyle setup.py insta485generator

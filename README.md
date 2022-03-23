@@ -18,9 +18,17 @@ We assembled ∼35k pairs of images that differ by ≤ 4 objects as the Hard set
 The paired image dataset can be round in the [input](https://github.com/Anbyew/Pragmatic-Rational-Speaker/tree/main/input) folder: [split]_[difficulty]_IDX.txt.
 e.g. TRAIN_s_IDX.txt. Each file includes three columns: {img1_idx, img2_idx, #diff_obj}.
 
-To create disparities, the following files in the [input](https://github.com/Anbyew/Pragmatic-Rational-Speaker/tree/main/input) folder were used to modify the ground truth training dataset for the corresponding listener's' image-caption grounding module: 
-- Hypernym: [changeD_hypernym.json](https://github.com/Anbyew/Pragmatic-Rational-Speaker/blob/main/input/changdD_hypernym.json)
-- Limited Visual: [changdD_catog.json](https://github.com/Anbyew/Pragmatic-Rational-Speaker/blob/main/input/changdD_catog.json)
+To create disparities, run [buildGT.py](https://github.com/Anbyew/Pragmatic-Rational-Speaker/blob/main/buildGT.py) to create corresponding datasets and intermediate files.
+
+Options:
+```python
+  -d, --disparity TEXT  Disparity type: hypernym(knowledge), catog(limited visual)
+  -i, --inpath TEXT     The input file path, default 'input/'
+  -o, --outpath TEXT    The output file path, default 'input/'
+  -img, --imgpath TEXT  Input image file folder, default 'AbstractScenes_v1.1/RenderedScenes/'
+  -l, --maxlen INTEGER  max sentence length, default 25
+  --help    
+```
 
 
 ## Models
@@ -54,6 +62,17 @@ To create listeners with disparities, retrain the image captioning model from pr
 ### Pragmatic Rational Speaker
 On top of the Rational Speaker, the Pragmatic Rational Speaker incorporates a disparity adjustment layer to learn and accommodate the listener’s disparity through REINFORCE interactions. The model can be found in [pragmatic.py](https://github.com/Anbyew/Pragmatic-Rational-Speaker/blob/main/pragmatic.py)
 
+Options:
+```python
+  -d, --disparityin TEXT  Disparity type: hypernym, catog
+  -s, --simplicity TEXT   Simplicity of the dataset, b: both, s: simple, h:
+                          hard. Default 'b'
+  -t, --testime BOOLEAN   Train or Test mode, default Train
+  -r, --repeat INTEGER    Number of tests to repeat, default 1
+  -i, --inpath TEXT       The input file path, default 'input/'
+  -c, --ckptin TEXT       Checkpoint for previously saved model, default None
+  --help                  Show this message and exit.  
+```
 
 
 ## License

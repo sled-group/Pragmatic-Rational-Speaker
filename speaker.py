@@ -1,7 +1,9 @@
 import torch
 import torch.nn.functional as F
+from listener import pickone
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 
 def trstep(decoder, img, partial_captions, beam_size, emb_dim, maxx):
